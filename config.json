@@ -1,0 +1,14 @@
+{
+    "btjs": [
+    "**/js/bootstrap.js"
+    ],
+    "js": [
+    "**/js/*.js"
+    ],
+    "css": [
+    "**/css/**/*.css"
+    ],
+    "html": [
+    "**/*.html"
+    ]
+}

@@ -1,0 +1,39 @@
+# Ignore docs files
+.ruby-version
+
+# Numerous always-ignore extensions
+*.diff
+*.err
+*.log
+*.orig
+*.rej
+*.swo
+*.swp
+*.vi
+*.zip
+*~
+node_modules.rar
+
+# OS or Editor folders
+._*
+.cache
+.DS_Store
+.vscode
+.idea
+.project
+.settings
+.tmproj
+*.esproj
+*.sublime-project
+*.sublime-workspace
+nbproject
+Thumbs.db
+
+# Komodo
+.komodotools
+*.komodoproject
+
+# Folders to ignore
+node_modules
+source
+tmp
