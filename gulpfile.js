@@ -1,6 +1,6 @@
 /*
  * @Date: 2015-12-01 18:19:10
- * @Author: SCM <ejbscm@hotmail.com>
+ * @Author: mkyo <ejbscm@hotmail.com>
  * @Description: If you have some questions, please contact: ejbscm@hotmail.com.
  */
 const path = require("path"),
@@ -13,6 +13,8 @@ const path = require("path"),
     minifyHtml = require("gulp-minify-html"),
     replace = require('gulp-replace'),
     unzip = require('gulp-unzip'),
+    jshint = require("gulp-jshint"),
+    stylish = require('jshint-stylish'),
     htmlhint = require("gulp-htmlhint"),
     plumber = require('gulp-plumber');
 
@@ -106,8 +108,8 @@ gulp.task("package",['zip'],function(cb){
 // todo 检测js 语法
 gulp.task("check-js",function () {
      gulp.src(config.js)
-        .pipe(plumber())
-        .pipe(uglify());
+        .pipe(jshint())
+        .pipe(jshint.reporter(stylish));
 });
 
 gulp.task('check-html',function(){

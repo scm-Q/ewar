@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /*
  * @Date: 2019-09-06 11:25:00
- * @Author: SCM <ejbscm@hotmail.com>
+ * @Author: mkyo <ejbscm@hotmail.com>
  * @Description: If you have some questions, please contact: ejbscm@hotmail.com.
  */
 const { spawn } = require('child_process');
@@ -11,9 +11,9 @@ program.version('v' + require('./package.json').version)
   .description('uglify and add version of war archive files')
 
 // Notify update when process exits
-// const updater = require('update-notifier');
-// const pkg = require('../package.json');
-// updater({ pkg }).notify({ defer: true });
+const updater = require('update-notifier');
+const pkg = require('./package.json');
+updater({ pkg }).notify({ defer: true });
 
 program.command('unzip <source>')
     .alias('u')
@@ -28,12 +28,11 @@ program.command('unzip <source>')
         runCommand('unzip', options);
     });
 
-program.command('clean')
+program.command('clean <tmpDir>')
         .description('clean the tmpDir files dir')
-        .option('--tmpDir <file path>','tmp target dir')
-        .action(function(options){
+        .action(function(tmpDir){
             runCommand('del:tmp',{
-                tmpDir: options.tmpDir
+                tmpDir: tmpDir
             })
         });
 
@@ -49,22 +48,22 @@ program.command('minifycss <source>')
 program.command('uglifyjs <source>')
         .alias('ujs')
         .description('uglify the sourceDir js files')
-        .option('--version','add js request version,  avoid js cache')
+        .option('--v <version>','add js request version,  avoid js cache')
         .action(function(sourceDir, options){
             runCommand('uglifyjs',{
                 tmpDir: sourceDir,
-                version: options.version
+                version: options.v
             })
 });
 
 program.command('addversion <source>')
-        .alias('aversion')
+        .alias('av')
         .description('add js,css,html resources version')
-        .option('--version','add static resouces request version,  avoid cache')
+        .option('--v <version>','add static resouces request version,  avoid cache')
         .action(function(sourceDir, options){
             runCommand('add-version',{
                 tmpDir: sourceDir,
-                version: options.version
+                version: options.v
             })
 });
 
@@ -89,11 +88,11 @@ program.command('checkhtml <source>')
 program.command('minifyhtml <source>')
         .alias('mhtml')
         .description('add js request version and uglify html files')
-        .option('--version','add js request version in html')
+        .option('--v <version>','add js request version in html')
         .action(function(sourceDir, options){
             runCommand('minifyHtml',{
                 tmpDir: sourceDir,
-                version: options.version
+                version: options.v
             })
 });
 
@@ -107,13 +106,13 @@ program.command('compile <source>')
 
 program.command('zip <source>')
     .description('zip all files to *.zip')
-    .option('--warName', 'zip package name')
-    .option('--output', 'output zip package dir, default: ./output')
+    .option('--name <name>', 'zip package name')
+    .option('--output <output>', 'output zip package dir, default: ./output')
     .action(function(source, options) {
         options = {
             tmpDir: source,
             output: options.output,
-            zipName: options.warName || 'package'
+            zipName: options.name || 'package'
         };
         runCommand('zip', options);
     });   
@@ -157,12 +156,9 @@ function runCommand(command, args) {
         console.error(`stderr: ${data}`);
     });
     cp.on('close', (code) => {
-    console.log(`子进程退出，退出码 ${code}`);
+    console.log(`执行命令完成，code： ${code}.`);
     });
     cp.on('error', err => {
     console.log(err);
-    });
-    cp.on('message', message => {
-    
     });
 }

@@ -5,17 +5,15 @@
     "ewar": "./bin/ewar.js"
   },
   "scripts": {
-    "unzip": "node ./cli.js unzip ./source/test.zip",
-    "dev": "node --inspect ./cli.js unzip ./source/test.zip"
+    "dev": "node --inspect ./cli.js unzip ./source/test.war"
   },
   "author": {
-    "name": "SCM",
-    "email": "ejbscm@hotmail.com"
+    "name": "mkyo",
+    "email": "mkyo16@hotmail.com"
   },
   "license": "MIT",
   "dependencies": {
     "commander": "^2.20.0",
-    "resolve-cwd": "3.0.0",
     "del": "^1.1.1",
     "gulp": "^3.8.9",
     "gulp-htmlhint": "^0.3.0",
@@ -29,7 +27,9 @@
     "gulp-util": "^3.0.6",
     "gulp-zip": "^3.0.2",
     "htmlhint-stylish": "^1.0.3",
-    "jshint-stylish": "^2.0.1"
+    "jshint-stylish": "^2.0.1",
+    "resolve-cwd": "3.0.0",
+    "update-notifier": "^3.0.1"
   },
   "devDependencies": {},
   "keywords": [

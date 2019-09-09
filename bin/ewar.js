@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /*
  * @Date: 2019-07-18 09:41:57
- * @Author: Scm <ejbscm@hotmail.com>
+ * @Author: mkyo <ejbscm@hotmail.com>
  * @Description: If you have some questions, please contact: ejbscm@hotmail.com.
  */
 const resolveCwd = require('resolve-cwd');
