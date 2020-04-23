@@ -1,11 +1,11 @@
 {
   "name": "ewar",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "bin": {
     "ewar": "./bin/ewar.js"
   },
   "scripts": {
-    "dev": "node --inspect ./cli.js unzip ./source/test.war"
+    "dev": "node --inspect ./cli.js unzip ./source/sdswar.war"
   },
   "author": {
     "name": "mkyo",
@@ -29,7 +29,7 @@
     "htmlhint-stylish": "^1.0.3",
     "jshint-stylish": "^2.0.1",
     "resolve-cwd": "3.0.0",
-    "update-notifier": "^3.0.1"
+    "update-notifier": "^4.1.0"
   },
   "devDependencies": {},
   "keywords": [

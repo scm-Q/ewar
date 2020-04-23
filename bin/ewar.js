@@ -6,6 +6,8 @@
  */
 const resolveCwd = require('resolve-cwd');
 
+process.env.currentCwd = process.cwd();
+
 const localCLI = resolveCwd.silent('ewar/bin/ewar');
 if (localCLI && localCLI !== __filename) {
   const debug = require('debug')('ewar');

@@ -3,7 +3,7 @@
  * @Author: mkyo <ejbscm@hotmail.com>
  * @Description: If you have some questions, please contact: ejbscm@hotmail.com.
  */
-const path = require("path"),
+const {join} = require("path"),
     fs = require('fs'),
     gulp = require("gulp"),
 	del = require('del'),
@@ -26,11 +26,14 @@ if(customCfgFile && fs.exists(customCfgFile)){
         JSON.parse(fs.readFileSync(customCfgFile))
     );
 }
-const tmpDir = process.env.tmpDir || './tmp';
+
+const currentCwd = process.env.currentCwd || process.cwd();
+const tmpDir = join(currentCwd ,process.env.tmpDir || './tmp');
+
 
 Object.keys(config).forEach(function (key) {
     config[key].forEach(function (val, i, arr) {
-        arr[i] = path.join(tmpDir, val);
+        arr[i] = join(tmpDir, val);
     });
 });
 
@@ -38,18 +41,22 @@ function getVersion() {
     return process.env.version || new Date().getTime();
 }
 
+function getPath(rpath) {
+    return rpath;
+}
+
 gulp.task('del:tmp',function(cb){
-    del([tmpDir], cb);
+    del([tmpDir], {force: true}, cb);
 });
 
 gulp.task('unzip', ['del:tmp'],function(){
-	return gulp.src(process.env.source)
+	return gulp.src(getPath(process.env.source))
     .pipe(unzip())
     .pipe(gulp.dest(tmpDir));
 });
 
 gulp.task("minifycss",function () {
-    return gulp.src(config.css)
+    return gulp.src(getPath(config.css))
         .pipe(plumber())
         .pipe(minifycss())
         .pipe(gulp.dest(tmpDir));
@@ -57,14 +64,14 @@ gulp.task("minifycss",function () {
 
 // 添加公共bootstrap.js公共请求版本
 gulp.task("addjs:version", function () {
-    return gulp.src(config.btjs)
+    return gulp.src(getPath(config.btjs))
 		.pipe(replace(/([^\s!\\]+(?=\.(js|css))\.\2)/gi, '$&?v='  + getVersion()))
         .pipe(gulp.dest(tmpDir));
 });
 
 // 添加html请求js,css版本
 gulp.task('addhtml:version', function(){
-    gulp.src(config.html)
+    gulp.src(getPath(config.html))
         .pipe(replace(/([^\s!\\]+(?=\.(js|css)("|'))\.\2)/gi, '$&?v='  + getVersion()))
       .pipe(gulp.dest(tmpDir));
   });
@@ -74,14 +81,14 @@ gulp.task("add-version",function(cb){
 });
 
 gulp.task("uglifyjs",["addjs:version"], function () {
-    return gulp.src(config.js)
+    return gulp.src(getPath(config.js))
         .pipe(plumber())
         .pipe(uglify())
         .pipe(gulp.dest(tmpDir));
 });
  
 gulp.task('minifyHtml', function(){
-  gulp.src(config.html)
+  gulp.src(getPath(config.html))
 	  .pipe(replace(/([^\s!\\]+(?=\.(js|css)("|'))\.\2)/gi, '$&?v='  + getVersion()))
       .pipe(minifyHtml())
     .pipe(gulp.dest(tmpDir));
@@ -98,7 +105,7 @@ gulp.task("build",["unzip"],function(cb){
 gulp.task('zip',function() {
    return gulp.src(tmpDir + '/**')
      .pipe(zip(process.env.zipName + '.war'))
-	 .pipe(gulp.dest(process.env.output || './output'));
+	 .pipe(gulp.dest(getPath(process.env.output || './output')));
 });
 
 gulp.task("package",['zip'],function(cb){
@@ -107,7 +114,7 @@ gulp.task("package",['zip'],function(cb){
 
 // todo 检测js 语法
 gulp.task("check-js",function () {
-     gulp.src(config.js)
+     gulp.src(getPath(config.js))
         .pipe(jshint())
         .pipe(jshint.reporter(stylish));
 });
